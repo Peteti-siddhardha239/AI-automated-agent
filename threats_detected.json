@@ -1,0 +1,62 @@
+[
+  {
+    "id": "390c388d-8b6c-47b1-b60f-d6c80ae6d5cd",
+    "timestamp": "2026-10-12 15:02:45",
+    "threat_name": "Trojan.Masquerade.DoubleExtension",
+    "threat_type": "TrojanDropper",
+    "severity": "HIGH",
+    "original_path": "C:\\Users\\SIDDHARDHA\\Downloads\\urgent_salary_slip.pdf.exe",
+    "original_name": "urgent_salary_slip.pdf.exe",
+    "quarantine_vault_path": "C:\\Users\\SIDDHARDHA\\Desktop\\agent\\antivirus_agent\\quarantine\\20261012_150245_35a79198_urgent_salary_slip.pdf.exe.quarantined",
+    "sha256": "20e08612b2095429c85e6dc1cfab9aadc1a5821f74029855be8ad8afebe6f223",
+    "md5": "f2da850d06f9b7e1e63c7292548cb0fe",
+    "file_size": 44,
+    "detection_details": "Deceptive Extension Masquerade (.pdf.exe)",
+    "action": "AUTO_REMOVED_AND_QUARANTINED"
+  },
+  {
+    "id": "f42e20f6-906d-47d8-b456-66c7c1c68957",
+    "timestamp": "2026-10-12 15:02:42",
+    "threat_name": "EICAR-Standard-AV-Test-File",
+    "threat_type": "AntivirusTestVector",
+    "severity": "TEST_ALERT",
+    "original_path": "C:\\Users\\SIDDHARDHA\\Downloads\\eicar_test_virus.txt",
+    "original_name": "eicar_test_virus.txt",
+    "quarantine_vault_path": "C:\\Users\\SIDDHARDHA\\Desktop\\agent\\antivirus_agent\\quarantine\\20261012_150242_dc0474ea_eicar_test_virus.txt.quarantined",
+    "sha256": "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f",
+    "md5": "44d88612fea8a8f36de82e1278abb02f",
+    "file_size": 68,
+    "detection_details": "Standard international antivirus verification test string matched",
+    "action": "AUTO_REMOVED_AND_QUARANTINED"
+  },
+  {
+    "id": "ac93e51f-9ab2-43d2-9e60-47b18bce2c8e",
+    "timestamp": "2026-10-12 15:01:04",
+    "threat_name": "Trojan.Masquerade.DoubleExtension",
+    "threat_type": "TrojanDropper",
+    "severity": "HIGH",
+    "original_path": "C:\\Users\\SIDDHARDHA\\Downloads\\urgent_salary_slip.pdf.exe",
+    "original_name": "urgent_salary_slip.pdf.exe",
+    "quarantine_vault_path": "C:\\Users\\SIDDHARDHA\\Desktop\\agent\\antivirus_agent\\quarantine\\20261012_150104_a2cc8d19_urgent_salary_slip.pdf.exe.quarantined",
+    "sha256": "20e08612b2095429c85e6dc1cfab9aadc1a5821f74029855be8ad8afebe6f223",
+    "md5": "f2da850d06f9b7e1e63c7292548cb0fe",
+    "file_size": 44,
+    "detection_details": "Deceptive Extension Masquerade (.pdf.exe)",
+    "action": "AUTO_REMOVED_AND_QUARANTINED"
+  },
+  {
+    "id": "1de6d726-8bc3-44a0-ade2-139490d6f291",
+    "timestamp": "2026-10-12 15:01:00",
+    "threat_name": "EICAR-Standard-AV-Test-File",
+    "threat_type": "AntivirusTestVector",
+    "severity": "TEST_ALERT",
+    "original_path": "C:\\Users\\SIDDHARDHA\\Downloads\\eicar_test_virus.txt",
+    "original_name": "eicar_test_virus.txt",
+    "quarantine_vault_path": "C:\\Users\\SIDDHARDHA\\Desktop\\agent\\antivirus_agent\\quarantine\\20261012_150100_4dfa6470_eicar_test_virus.txt.quarantined",
+    "sha256": "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f",
+    "md5": "44d88612fea8a8f36de82e1278abb02f",
+    "file_size": 68,
+    "detection_details": "Standard international antivirus verification test string matched",
+    "action": "AUTO_REMOVED_AND_QUARANTINED"
+  }
+]

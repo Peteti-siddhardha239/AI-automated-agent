@@ -1,0 +1,16 @@
+{
+  "agent_name": "Sentinel Background Antivirus Agent",
+  "status": "ACTIVE_MONITORING",
+  "pid": 25220,
+  "started_at": "2026-10-12T14:59:43.322971",
+  "last_heartbeat": "2026-10-12T15:29:19.082877",
+  "scanned_files_count": 38083,
+  "threats_neutralized_count": 4,
+  "active_watch_paths": [
+    "C:\\Users\\SIDDHARDHA\\Downloads",
+    "C:\\Users\\SIDDHARDHA\\Desktop",
+    "C:\\Users\\SIDDHARDHA\\AppData\\Local\\Temp",
+    "C:\\Users\\SIDDHARDHA\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
+  ],
+  "version": "1.0.0"
+}

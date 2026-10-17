@@ -1,0 +1,24 @@
+{
+  "agent_name": "Sentinel Background Antivirus Agent",
+  "version": "1.0.0",
+  "watch_paths": [
+    "C:\\Users\\SIDDHARDHA\\Downloads",
+    "C:\\Users\\SIDDHARDHA\\Desktop",
+    "C:\\Users\\SIDDHARDHA\\AppData\\Local\\Temp",
+    "C:\\Users\\SIDDHARDHA\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
+  ],
+  "exclude_paths": [
+    "C:\\Users\\SIDDHARDHA\\Desktop\\agent\\antivirus_agent",
+    "C:\\Users\\SIDDHARDHA\\.gemini"
+  ],
+  "auto_quarantine": true,
+  "terminate_associated_process": true,
+  "show_notifications": true,
+  "periodic_scan_interval_seconds": 30,
+  "max_file_size_mb": 150,
+  "entropy_threshold": 7.75,
+  "log_file": "agent_log.txt",
+  "status_file": "agent_status.json",
+  "threats_db": "threats_detected.json",
+  "quarantine_dir": "quarantine"
+}

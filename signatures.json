@@ -1,0 +1,134 @@
+{
+  "file_hashes": {
+    "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f": {
+      "name": "EICAR-Standard-AV-Test-File",
+      "severity": "TEST_ALERT",
+      "type": "TestSignature"
+    },
+    "44d88612fea8a8f36de82e1278abb02f": {
+      "name": "EICAR-Standard-AV-Test-File (MD5)",
+      "severity": "TEST_ALERT",
+      "type": "TestSignature"
+    },
+    "ed01ebf83334a193731403955de1a2217e6e31ff0a0841e8d055e649da692542": {
+      "name": "Ransom.WannaCry.MSR",
+      "severity": "CRITICAL",
+      "type": "Ransomware"
+    },
+    "43306db7151e2730bfd30232ecdf5c4cfca9e87dc073feef9ae603f90a9d8641": {
+      "name": "Trojan.Emotet.Banker",
+      "severity": "CRITICAL",
+      "type": "BankingTrojan"
+    },
+    "534944b2ab6379562725e229c9ccf69c5e2d1d0c1e89b2cc1c1ec41e05ecae9e": {
+      "name": "Ransom.Locky.Variant",
+      "severity": "CRITICAL",
+      "type": "Ransomware"
+    },
+    "8b0b8c2dfa9a3b60f9e160f4e3c1626da4ba2f48ef6f2334f6bb992a7281f62b": {
+      "name": "Ransom.Ryuk.Loader",
+      "severity": "CRITICAL",
+      "type": "Ransomware"
+    },
+    "94e3cd341253c0ddbc5da58c279435b62b1a03f443586d34b3e8e121544a49c9": {
+      "name": "HackTool.Mimikatz.LogonPasswords",
+      "severity": "HIGH",
+      "type": "CredentialStealer"
+    },
+    "d28135a513eb3214b7ef40ee9e0e565ad0c0836528d22d25f750b322a450ff7a": {
+      "name": "Ransom.DarkSide.Enterprise",
+      "severity": "CRITICAL",
+      "type": "Ransomware"
+    }
+  },
+  "eicar_string": "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*",
+  "ransomware_extensions": [
+    ".locked",
+    ".crypto",
+    ".wannacry",
+    ".wncry",
+    ".lockbit",
+    ".blackcat",
+    ".stop",
+    ".crypted",
+    ".enc",
+    ".ryuk",
+    ".cerber",
+    ".zepto",
+    ".djvu"
+  ],
+  "ransom_notes": [
+    "readme_decrypt",
+    "how_to_decrypt",
+    "how_to_recover",
+    "decrypt_files",
+    "restore_files",
+    "recovery_key"
+  ],
+  "fake_extensions": [
+    ".pdf",
+    ".docx",
+    ".xlsx",
+    ".pptx",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".txt",
+    ".mp3",
+    ".mp4"
+  ],
+  "dangerous_executable_extensions": [
+    ".exe",
+    ".scr",
+    ".bat",
+    ".cmd",
+    ".vbs",
+    ".vbe",
+    ".js",
+    ".jse",
+    ".wsf",
+    ".wsh",
+    ".ps1",
+    ".hta",
+    ".pif"
+  ],
+  "malicious_script_patterns": [
+    {
+      "pattern": "DownloadString|DownloadFile",
+      "secondary": "Invoke-Expression|IEX|powershell|cmd.exe",
+      "name": "Heuristic.Script.WebDownloadCradle",
+      "severity": "HIGH"
+    },
+    {
+      "pattern": "-EncodedCommand|-enc\\s+[A-Za-z0-9+/=]{20,}",
+      "name": "Heuristic.PowerShell.ObfuscatedPayload",
+      "severity": "HIGH"
+    },
+    {
+      "pattern": "-w\\s+hidden|-windowstyle\\s+hidden",
+      "secondary": "-ep\\s+bypass|-executionpolicy\\s+bypass",
+      "name": "Heuristic.PowerShell.HiddenExecutionBypass",
+      "severity": "MEDIUM"
+    },
+    {
+      "pattern": "Set-MpPreference.*-DisableRealtimeMonitoring.*\\$true",
+      "name": "Heuristic.Tamper.DisableDefender",
+      "severity": "CRITICAL"
+    },
+    {
+      "pattern": "wevtutil.*cl.*(System|Security|Application)",
+      "name": "Heuristic.AntiForensics.ClearLogs",
+      "severity": "HIGH"
+    },
+    {
+      "pattern": "vssadmin.*delete.*shadows.*\\/all",
+      "name": "Heuristic.Ransomware.ShadowCopyDeletion",
+      "severity": "CRITICAL"
+    },
+    {
+      "pattern": "bcdedit.*\\/set.*bootstatuspolicy.*ignoreallfailures",
+      "name": "Heuristic.Ransomware.BcdEditTamper",
+      "severity": "CRITICAL"
+    }
+  ]
+}

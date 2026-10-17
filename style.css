@@ -1,0 +1,230 @@
+/* ==========================================================================
+   AstraGov AI - 3D Interactive Government Exam Platform Design System
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --bg-deep: #030712;
+  --bg-surface: #090f21;
+  --bg-glass: rgba(15, 23, 42, 0.68);
+  --border-glass: rgba(255, 255, 255, 0.09);
+  --border-glow: rgba(0, 245, 255, 0.35);
+  
+  --cyan: #00f5ff;
+  --cyan-glow: rgba(0, 245, 255, 0.25);
+  --purple: #a855f7;
+  --indigo: #6366f1;
+  --emerald: #10b981;
+  --rose: #f43f5e;
+  --amber: #f59e0b;
+  
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: var(--bg-deep);
+  color: #f1f5f9;
+  font-family: var(--font-main);
+  overflow-x: hidden;
+  min-height: 100vh;
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #030712;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* 3D Canvas Container */
+#hero-3d-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.hero-overlay-layer {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+.hero-interactive {
+  pointer-events: auto;
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: 1.25rem;
+}
+
+.glass-nav {
+  background: rgba(3, 7, 18, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 245, 255, 0.4);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 12px 30px -10px rgba(0, 245, 255, 0.15), 0 0 1px 1px rgba(0, 245, 255, 0.2);
+}
+
+/* Glowing Neon Badges & Buttons */
+.badge-neon-cyan {
+  background: rgba(0, 245, 255, 0.1);
+  color: var(--cyan);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+}
+
+.badge-neon-purple {
+  background: rgba(168, 85, 247, 0.1);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.btn-cyber-primary {
+  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+  transition: all 0.25s ease;
+}
+
+.btn-cyber-primary:hover {
+  box-shadow: 0 0 35px rgba(6, 182, 212, 0.65);
+  transform: translateY(-2px);
+}
+
+.btn-cyber-secondary {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+  transition: all 0.2s ease;
+}
+.btn-cyber-secondary:hover {
+  background: rgba(51, 65, 85, 0.8);
+  border-color: var(--cyan);
+  color: #ffffff;
+}
+
+/* 3D HUD Badge on Canvas */
+#scene-active-node-hud {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  box-shadow: 0 0 15px var(--cyan-glow);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+#scene-active-node-hud.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Question Font Scale adjustments */
+.font-sm #question-body-text {
+  font-size: 0.875rem;
+}
+.font-md #question-body-text {
+  font-size: 1.05rem;
+}
+.font-lg #question-body-text {
+  font-size: 1.25rem;
+}
+
+/* Pulse animation */
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 245, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 245, 255, 0.6);
+  }
+}
+.animate-neon-pulse {
+  animation: neonPulse 3s infinite ease-in-out;
+}
+
+/* Subtle fade in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Exam interface layout */
+.exam-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .exam-split-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Question Palette item styles */
+.palette-btn {
+  font-family: var(--font-mono);
+  user-select: none;
+}
+
+/* Floating AI Chat Assistant Drawer */
+#ai-chat-drawer {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#ai-chat-drawer.closed {
+  transform: translateX(110%);
+}

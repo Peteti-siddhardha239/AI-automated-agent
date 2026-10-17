@@ -1,107 +1,76 @@
-# 🤖 Gemini AI Studio & Autonomous System Automation Agent
+# Sentinel Real-Time Antivirus Background Agent
 
-An autonomous, full-stack **AI System Automation Agent** and Web Application built with a **Python FastAPI backend** and a pure **HTML5 / CSS3 / JavaScript frontend** powered by the official **Google GenAI SDK** (`google-genai`) and `gemini-3.8-flash`.
-
-![Status](https://img.shields.io/badge/Status-Agentic%20Ready-brightgreen)
-![Python](https://img.shields.io/badge/Python-3.14+-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688)
-![Models](https://img.shields.io/badge/Models-Gemini%203.8%20Flash%20%7C%203.5%20Flash--Lite-orange)
-![Agent Loop](https://img.shields.io/badge/Agent-Autonomous%20ReAct-purple)
+An autonomous, ultra-lightweight, real-time defensive endpoint security agent designed to run completely silently in the Windows background without opening any app windows, console windows, browser pages, or taskbar icons.
 
 ---
 
-## 🌟 Key Capabilities
+## 🚀 Key Features
 
-### ⚡ Autonomous System Automation Agent
-The agent can autonomously plan, execute, and verify operations directly on your computer:
-1. **💻 PowerShell & Shell Command Execution (`execute_command`)**: Runs commands, diagnostics, scripts, and software tools.
-2. **📖 File Reading (`read_file`)**: Reads any local file with line range indexing.
-3. **✍️ File Writing & Editing (`write_file`)**: Creates scripts, configurations, and documents with auto-directory creation.
-4. **📁 Directory Inspection (`list_directory`)**: Explores directories, sizes, timestamps, and item trees.
-5. **🔍 File Search (`search_files`)**: Recursively finds files matching glob patterns or extensions.
-6. **🔎 Content Search (`grep_search`)**: Searches for text or patterns across multiple files.
-7. **📊 System Hardware & Health (`system_info`)**: Gathers Windows OS build, CPU model, RAM usage, and disk space across all drives.
-8. **⚡ Process Monitoring & Control (`manage_processes`)**: Lists top memory/CPU-heavy processes or safely stops processes.
-9. **🚀 Application Launcher (`launch_application`)**: Launches desktop software (Notepad, Calculator, VS Code, Explorer, browser).
-10. **🌐 Web Fetcher (`fetch_web_content`)**: Retrieves clean text content from web pages.
+1. **100% Silent Background Operation**:
+   - Executes via Windows `pythonw.exe` and silent VBScript launcher.
+   - Absolutely zero console windows, taskbar items, or system tray clutter.
+   - Maintains a live background process ID and JSON heartbeat telemetry.
 
-### 🎨 Modern Interactive Web Interface
-- **Mode Switcher**: Easily toggle between **🤖 Automated Agent** mode (full tool execution) and **💬 Pure Chat** mode.
-- **Collapsible Tool Execution Cards**:
-  - Live execution badge (Running ⏳ / Success ✅ / Failed ❌).
-  - Terminal code box with line formatting and one-click **Copy Output**.
-  - Execution runtime duration metrics.
-- **Live Agent Step Banner**: Displays real-time planning and execution state.
-- **Interactive Tools Drawer**: View documentation for all 10 registered system tools directly in the UI.
-- **Persisted Session History**: Chat and multi-turn agent execution cards are saved locally in browser storage.
-- **Glassmorphism Design**: Responsive layout, dark/light theme toggle, custom scrollbars, and voice-to-text dictation.
-- **Instant Safe Demo Mode**: Works out of the box with safe local system diagnostics even before configuring a Gemini API key.
+2. **Real-Time Kernel-Level File System Sentinel**:
+   - Employs Windows native `ReadDirectoryChangesW` kernel API for sub-millisecond event interception on:
+     - `Downloads` (`%USERPROFILE%\Downloads`)
+     - `Desktop` (`%USERPROFILE%\Desktop`)
+     - `Temp` (`%LOCALAPPDATA%\Temp`)
+     - `Startup` (`%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup`)
+   - Supplemented by a periodic 30-second background deep-sweeper ensuring 100% coverage.
 
----
+3. **Multi-Tier Virus & Malware Detection Engine**:
+   - **Industry-Standard EICAR Detection**: Recognizes the international standard antivirus test string.
+   - **Cryptographic Hash Signatures**: SHA-256 and MD5 database for known ransomware and trojans (WannaCry, Emotet, Locky, Ryuk, Mimikatz, DarkSide).
+   - **Deceptive Extension Masquerade**: Intercepts double-extension droppers (e.g., `document.pdf.exe`, `photo.jpg.vbs`).
+   - **Ransomware Protection**: Detects known ransomware extension signatures (`.locked`, `.crypto`, `.wannacry`, `.lockbit`, `.stop`, `.crypted`) and extortion notes.
+   - **Heuristic Script Analysis**: Inspects `.bat`, `.ps1`, `.vbs`, `.js` for web download cradles, hidden window execution bypasses, Defender tampering, and shadow copy deletion.
+   - **Binary Shannon Entropy**: Analyzes PE binaries for packed or encrypted payloads with abnormal entropy (> 7.75/8.0).
 
-## 📁 Project Structure
-
-```
-c:\Users\simha\siddu\
-├── app.py              # FastAPI server, agent streaming & system endpoints
-├── agent.py            # ReAct autonomous agent loop with Gemini Function Calling
-├── agent_tools.py      # 10 native Windows system automation tools
-├── run.py              # Convenient one-click launcher script
-├── requirements.txt    # Python dependencies
-├── .env.example        # Environment variable template
-├── static/             # Static web application files (served at /)
-│   ├── index.html      # Responsive UI layout, modals, and prompt chips
-│   ├── style.css       # Glassmorphism design, terminal styling & themes
-│   └── app.js          # Event-driven SSE client & dynamic card rendering
-└── README.md           # Documentation
-```
+4. **Self-Remediation & Automated Threat Removal**:
+   - Automatically searches for and terminates any active Windows processes running from the infected file path.
+   - Scrambles and neutralizes malicious byte content via XOR masking so files cannot be executed.
+   - Moves threats to an isolated, secure vault: `quarantine/`.
+   - Shreds/purges the original malicious file from the monitored host directory.
+   - Logs detailed forensic records to `threats_detected.json` and `agent_log.txt`.
+   - Sends discreet Windows background notification toasts without taskbar presence.
 
 ---
 
-## 🚀 Quick Start
+## 📂 File Structure
 
-### 1. (Optional) Configure your Gemini API Key
-Get a free key from [Google AI Studio](https://aistudio.google.com/).
-Either create a `.env` file:
-```env
-GEMINI_API_KEY=your_actual_api_key_here
-```
-*Or* paste it into the in-app **Settings (⚙️)** dialog in your browser.
-
-### 2. Launch the Agent
-Start the server using Python:
-```powershell
-py run.py
-```
-This runs in the faster default mode without hot reload. If you want development auto-reload while editing files, use:
-```powershell
-$env:RELOAD="true"; py run.py
-```
-*Or with uvicorn directly:*
-```powershell
-py -m uvicorn app:app --port 8000
-```
-
-### 3. Open in Browser
-Visit:
-```
-http://localhost:8000
+```text
+Desktop\agent\
+│
+├── start_antivirus.bat          --> One-click background launcher
+├── stop_antivirus.bat           --> One-click safe shutdown
+├── status_antivirus.bat         --> Live status, PID, memory, and telemetry inspector
+├── test_antivirus.bat           --> Real-time test tool (drops safe EICAR test threat)
+│
+└── antivirus_agent\
+    ├── agent_core.py            --> Main orchestrator and background daemon
+    ├── engine.py                --> Multi-tier detection engine
+    ├── watcher.py               --> Windows kernel file monitor & sweeper
+    ├── quarantine.py            --> Process terminator, file isolator, XOR scrambler
+    ├── config.json              --> Configurable paths and security settings
+    ├── signatures.json          --> Known signatures and heuristic rules
+    ├── start.vbs                --> Completely silent background launcher
+    ├── start.bat                --> Batch launcher with validation
+    ├── stop.bat                 --> Safe shutdown script
+    ├── status.bat               --> Status and telemetry display
+    ├── view_logs.bat            --> Live log tail viewer
+    ├── test_threat.py           --> Automated test verification suite
+    ├── agent_log.txt            --> Forensic execution and detection log
+    ├── agent_status.json        --> Real-time heartbeat and telemetry
+    ├── threats_detected.json    --> Quarantined threat records
+    └── quarantine\              --> Vault holding neutralized files
 ```
 
 ---
 
-## 🛠️ API Endpoints
+## ⚡ Quick Usage
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/` | Serves the web interface (`index.html`) |
-| `GET` | `/api/models` | Returns available Gemini models metadata |
-| `GET` | `/api/status` | Returns system status, key presence, and registered tool count |
-| `GET` | `/api/agent/tools` | Returns detailed catalog of all 10 system tools |
-| `GET` | `/api/system/status` | Live host machine metrics (OS, CPU, RAM, Disks) |
-| `POST` | `/api/chat/stream` | Streams real-time agent/chat SSE events (`text/event-stream`) |
-
----
-
-## 📄 License
-MIT
+- **Start Background Protection**: Double-click `start_antivirus.bat`.
+- **Check Live Status**: Double-click `status_antivirus.bat`.
+- **Test Real-Time Removal**: Double-click `test_antivirus.bat`.
+- **Stop Protection**: Double-click `stop_antivirus.bat`.
