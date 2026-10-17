@@ -1,8 +1,7 @@
 import os
-import re
+import base64
 import json
 import asyncio
-import time
 import shutil
 from typing import List, Dict, Any, Optional, AsyncGenerator
 
@@ -39,6 +38,46 @@ EXECUTION INSTRUCTIONS:
 """
 
 
+def _message_text_with_attachments(message: Dict[str, Any]) -> str:
+    text = str(message.get("content", ""))
+    for attachment in message.get("attachments", []) or []:
+        if not isinstance(attachment, dict):
+            continue
+        name = str(attachment.get("name", "attachment"))
+        if attachment.get("is_text"):
+            text += f"\n\n--- Attached file: {name} ---\n{attachment.get('content', '')}"
+        else:
+            text += f"\n\nAttached file: {name} (binary content is unavailable to Antigravity mode)."
+    return text
+
+
+def build_genai_contents(messages: List[Dict[str, Any]]) -> List[types.Content]:
+    contents = []
+    for message in messages:
+        role = "model" if message.get("role") in ("model", "assistant") else "user"
+        parts = [types.Part.from_text(text=str(message.get("content", "")))]
+        for attachment in message.get("attachments", []) or []:
+            if not isinstance(attachment, dict):
+                continue
+            name = str(attachment.get("name", "attachment"))
+            content = str(attachment.get("content", ""))
+            if attachment.get("is_text"):
+                parts.append(types.Part.from_text(text=f"Attached file: {name}\n{content}"))
+                continue
+
+            header, separator, encoded = content.partition(",")
+            if not separator or not header.startswith("data:") or ";base64" not in header:
+                raise ValueError(f"Attachment {name!r} is not a valid base64 data URL.")
+            mime_type = header[5:].split(";", 1)[0] or str(attachment.get("type", ""))
+            try:
+                file_bytes = base64.b64decode(encoded, validate=True)
+            except ValueError as exc:
+                raise ValueError(f"Attachment {name!r} contains invalid base64 data.") from exc
+            parts.append(types.Part.from_bytes(data=file_bytes, mime_type=mime_type))
+        contents.append(types.Content(role=role, parts=parts))
+    return contents
+
+
 async def stream_antigravity_agent(
     messages: List[Dict[str, str]],
     model: str = "gemini-3.8-flash-high",
@@ -54,8 +93,8 @@ async def stream_antigravity_agent(
     history_lines = []
     for m in messages[:-1]:
         role = "User" if m.get("role") == "user" else "Assistant"
-        history_lines.append(f"{role}: {m.get('content', '')}")
-    last_user_msg = messages[-1].get("content", "") if messages else "Hello"
+        history_lines.append(f"{role}: {_message_text_with_attachments(m)}")
+    last_user_msg = _message_text_with_attachments(messages[-1]) if messages else "Hello"
 
     prompt = ""
     if system_instruction:
@@ -201,15 +240,7 @@ async def run_agent_loop(
         client = genai.Client(api_key=key)
         tools = list(agent_tools.ALL_TOOLS.values())
 
-        contents: List[types.Content] = []
-        for msg in messages:
-            role = "model" if msg.get("role") in ("model", "assistant") else "user"
-            contents.append(
-                types.Content(
-                    role=role,
-                    parts=[types.Part.from_text(text=msg.get("content", ""))],
-                )
-            )
+        contents = build_genai_contents(messages)
 
         full_system_instruction = AGENT_SYSTEM_INSTRUCTION
         if system_instruction:
@@ -229,7 +260,7 @@ async def run_agent_loop(
 
         step_count = 0
 
-        while step_count < max_steps:
+        while max_steps == 0 or step_count < max_steps:
             step_count += 1
             yield f"data: {json.dumps({'type': 'status', 'status': f'Step {step_count}: Planning next action...'})}\n\n"
 
@@ -284,7 +315,7 @@ async def run_agent_loop(
                         await asyncio.sleep(0.008)
                 break
 
-        if step_count >= max_steps:
+        else:
             yield f"data: {json.dumps({'type': 'text', 'text': '\n\n*(Reached maximum automated agent step limit)*'})}\n\n"
 
         yield f"data: {json.dumps({'type': 'done', 'done': True})}\n\n"

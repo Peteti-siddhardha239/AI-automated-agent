@@ -164,11 +164,14 @@ def list_directory(path: str = ".", max_depth: int = 1) -> Dict[str, Any]:
         if not target_path.is_dir():
             return {"status": "error", "error": f"Path is not a directory: {target_path}"}
 
+        max_depth = max(1, int(max_depth))
         items = []
         for root, dirs, files in os.walk(target_path):
             current_depth = len(Path(root).relative_to(target_path).parts)
+
             if current_depth >= max_depth:
-                dirs.clear()  # Don't recurse deeper
+                dirs.clear()
+                continue
 
             for d in dirs:
                 full_d = Path(root) / d
@@ -191,9 +194,6 @@ def list_directory(path: str = ".", max_depth: int = 1) -> Dict[str, Any]:
                     })
                 except Exception:
                     pass
-
-            if current_depth >= max_depth:
-                break
 
         return {
             "status": "success",
@@ -562,4 +562,3 @@ TOOL_METADATA = [
         "icon": "🌐",
     },
 ]
-

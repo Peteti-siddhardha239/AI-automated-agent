@@ -1,12 +1,12 @@
 import os
 import json
 import asyncio
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, Request
-from fastapi.responses import StreamingResponse, JSONResponse
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -49,9 +49,17 @@ AVAILABLE_MODELS = [
 ]
 
 
+class ChatAttachment(BaseModel):
+    name: str
+    type: str
+    content: str
+    is_text: bool = False
+
+
 class ChatMessage(BaseModel):
     role: str = Field(..., description="user or assistant / model")
     content: str = Field(..., description="The message text content")
+    attachments: Optional[List[ChatAttachment]] = None
 
 
 class ChatRequest(BaseModel):
@@ -60,7 +68,7 @@ class ChatRequest(BaseModel):
     mode: str = "agent"  # 'agent' or 'chat'
     system_instruction: Optional[str] = None
     temperature: float = 0.5
-    max_steps: int = 10
+    max_steps: int = Field(default=10, ge=0)
     api_key: Optional[str] = None
 
 
@@ -100,7 +108,7 @@ async def get_system_status():
 @app.post("/api/chat/stream")
 async def chat_stream(req: ChatRequest):
     api_key = (req.api_key or os.environ.get("GEMINI_API_KEY", "")).strip()
-    messages_dicts = [{"role": m.role, "content": m.content} for m in req.messages]
+    messages_dicts = [m.model_dump(exclude_none=True) for m in req.messages]
 
     # Route to Agent Mode (default)
     if req.mode == "agent":
@@ -132,20 +140,19 @@ async def chat_stream(req: ChatRequest):
         async def chat_event_generator():
             try:
                 client = genai.Client(api_key=api_key)
-                contents = [
-                    types.Content(
-                        role="model" if m.role in ("model", "assistant") else "user",
-                        parts=[types.Part.from_text(text=m.content)],
-                    )
-                    for m in req.messages
-                ]
+                contents = agent.build_genai_contents(messages_dicts)
                 sdk_model = req.model.replace("-high", "").replace("-medium", "").replace("-low", "")
                 if "claude" in sdk_model or "gpt" in sdk_model:
                     sdk_model = "gemini-3.8-flash"
 
+                config = types.GenerateContentConfig(
+                    system_instruction=req.system_instruction,
+                    temperature=req.temperature,
+                )
                 response_stream = client.models.generate_content_stream(
                     model=sdk_model,
                     contents=contents,
+                    config=config,
                 )
                 for chunk in response_stream:
                     if chunk.text:
